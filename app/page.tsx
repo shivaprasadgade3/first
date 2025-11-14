@@ -45,7 +45,7 @@ export default async function HomePage() {
     <div className="space-y-14">
       {hadErrors && (
         <div className="rounded-2xl border border-red-500/40 bg-red-500/10 p-4 text-sm text-red-100">
-          Unable to load TMDB data. Double-check that `TMDB_API_KEY` is set in your environment variables.
+          Unable to load TMDB data. Double-check that TMDB_API_KEY is set in your environment variables.
         </div>
       )}
       {heroMovie && <HeroBanner movie={heroMovie} />}

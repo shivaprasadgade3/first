@@ -3,8 +3,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
+import MovieRow from "@/components/MovieRow";
 import { buildImageUrl } from "@/lib/image";
-import { fetchMovieById } from "@/lib/tmdb";
+import { fetchMovieById, fetchSimilarMovies } from "@/lib/tmdb";
 
 type MovieDetailPageProps = {
   params: {
@@ -35,6 +36,9 @@ export default async function MovieDetailPage({ params }: MovieDetailPageProps) 
   if (!movie) {
     notFound();
   }
+
+  // Fetch similar movies
+  const similarMovies = await fetchSimilarMovies(params.id, 12).catch(() => []);
 
   const backdropUrl = buildImageUrl(movie.backdrop_path ?? movie.poster_path, "original");
   const posterUrl = buildImageUrl(movie.poster_path, "poster");
@@ -132,6 +136,14 @@ export default async function MovieDetailPage({ params }: MovieDetailPageProps) 
           </div>
         </div>
       </div>
+      
+      {/* Similar/Recommended Movies Section */}
+      {similarMovies.length > 0 && (
+        <div className="space-y-6">
+          <h2 className="text-2xl font-bold text-white">You Might Also Like</h2>
+          <MovieRow movies={similarMovies} categoryTitle="" />
+        </div>
+      )}
     </article>
   );
 }
